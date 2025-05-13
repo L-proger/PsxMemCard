@@ -6,7 +6,7 @@ namespace Psx {
     namespace MemCard {
         namespace HeaderFrame {
 
-            bool isBlockValid(const std::uint8_t* data) {
+            inline bool isBlockValid(const std::uint8_t* data) {
                 if((data[0] != 'M') || (data[1] != 'C')){
                     return false;
                 }
@@ -18,6 +18,16 @@ namespace Psx {
                 return checksum == data[127];
             }
         }
+
+        enum class BlockAllocationState : std::uint8_t {
+            FirstFileBlock = 0x51,
+            MiddleFileBlock = 0x52,
+            LastFileBlock = 0x53,
+            Formatted = 0xa0,
+            FirstFileBlockDeleted = 0xa1,
+            MiddleFileBlockDeleted = 0xa2,
+            LastFileBlockDeleted = 0xa3
+        };
 
 #pragma pack(push, 1)
         struct DirectoryFrame {
